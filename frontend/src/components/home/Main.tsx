@@ -7,9 +7,9 @@ const Main = () => {
         <Box>
             <Grid container>
 
-            <Grid xs={2} sx={{position:"relative"}}><LeftSideBar /></Grid>
+                <Grid xs={2} sx={{ position: "relative" }}><LeftSideBar /></Grid>
 
-            <Grid xs={9}>Right</Grid>
+                <Grid xs={9}>Right</Grid>
             </Grid>
         </Box>
     );
