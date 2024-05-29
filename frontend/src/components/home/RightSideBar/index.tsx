@@ -1,5 +1,5 @@
-import { Box, Grid, InputAdornment, TextField, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import React, { useRef, useState } from 'react';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import InfoItem from './InfoItem';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
@@ -19,33 +19,84 @@ const StyledTextField = styled(TextField)({
     }
 })
 
+
 const RightSideBar = () => {
+    const inputtext = useRef<HTMLTextAreaElement>();
+    const [showChat, setshowChat] = useState(false);
+    const [submitText, setsubmitText] = useState("");
+
+
+
+    const onSubmit = () => {
+        const val = inputtext.current!.value;
+        if (!val) return;
+
+        setsubmitText(val)
+        inputtext.current!.value = ""
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onSubmit();
+
+        }
+    }
+
+
     return (
-        <Grid container flexDirection="column" sx={{ height: "100vh", position: "absouter" }}>
-            <Chat />
+        <Grid container flexDirection="column" sx={{ height: "100vh", position: "relative" }}>
 
-            {/* <Grid item sx={{ mt: "20vh", mb: 7 }}>
-                <Typography variant='h4' fontWeight="bold" color="primary" textAlign="center">
-                    Chat AI
-                </Typography>
-            </Grid>
-            <RightSideBarContainer>
+            {!!submitText ? (
+                <Chat inputtext={submitText} />
 
-                <Info />
-            </RightSideBarContainer> */}
-            <RightSideBarContainer sx={{ mt: "auto" }}>
+            ) : (<>
 
-                <Grid item container flexDirection="column" sx={{ position: "relative", bottom: 0, width: "100%", height: "10rem", pt: 5 }}>
-                    <StyledTextField placeholder='send message...' fullWidth
+                <Grid item sx={{ mt: { lg: "20vh", xs: 7 }, mb: 7 }}>
+                    <Typography variant='h4' fontWeight="bold" color="primary" textAlign="center">
+                        Chat AI
+                    </Typography>
+                </Grid>
+                <RightSideBarContainer>
+
+                    <Info />
+                </RightSideBarContainer>
+            </>)}
+
+
+
+            <Grid item container flexDirection="column" sx={{
+                position: "absolute",
+                bottom: 0,
+                width: "100%", height: "12rem",
+                //   pt: 5
+            }}>
+                <RightSideBarContainer sx={{ mt: "auto" }}>
+
+                    <StyledTextField
+                        placeholder='send message...' fullWidth
+                        multiline
+                        inputRef={inputtext}
+                        maxRows={4}
+                        onKeyDown={handleKeyDown}
+                        sx={{ mt: "auto" }}
                         InputProps={{
-                            endAdornment: <InputAdornment position="start"><SendOutlinedIcon color='primary' /></InputAdornment>,
-                            style: { color: "rgba(255,255,255,1)" }
+                            style: { color: "rgba(255,255,255,1)" },
+                            endAdornment: <InputAdornment position="start">
+                                <IconButton onClick={onSubmit} >
+                                    <SendOutlinedIcon color='primary' />
+                                </IconButton>
+                            </InputAdornment>,
+
                         }} />
+
+
                     <Box sx={{ color: "hsla(0, 0%, 100%, 0.5)", mt: 1, fontSize: "0.75rem", pt: 1 }}>
                         dasdas das das das dasf sdf afg shjdfj fgkyfukl fykdu bcvsg
                     </Box>
-                </Grid>
-            </RightSideBarContainer>
+                </RightSideBarContainer>
+
+            </Grid>
         </Grid>
     );
 }

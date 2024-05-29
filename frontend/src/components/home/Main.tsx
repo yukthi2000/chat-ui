@@ -6,16 +6,16 @@ import RightSideBar from './RightSideBar';
 const Main = () => {
     return (
         <Box>
-            <Grid container>
+            <Grid container sx={{ flexWrap: 'nowrap' }}>
 
-                <Grid
-                    //  xs={2} 
-                    sx={{ position: "relative", width: "20%" }}><LeftSideBar /></Grid>
+                <Grid item
+                    // xs={2}
+                    sx={{ position: "relative" }}><LeftSideBar /></Grid>
 
                 {/* <Grid sx={{ width: "calc(100% - 20%)" }}><RightSideBar /></Grid> */}
-                <Grid sx={{ width: "80%" }}>
+                <Grid item sx={{ width: "100%" }}>
 
-                        <RightSideBar />
+                    <RightSideBar />
                 </Grid>
 
             </Grid>

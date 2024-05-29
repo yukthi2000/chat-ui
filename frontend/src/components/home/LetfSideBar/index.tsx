@@ -14,15 +14,15 @@ const MuiButton = styled(Button)({
 const LeftSideBar = () => {
 
 
-    const nume = Array.from({ length: 20 })
+    const nume = Array.from({ length: 2 })
     return (
         <Box sx={{
-            position: "fixed",
+            // position: "fixed",
             top: 0,
             background: "rgba(32,33,35,1)",
             left: 0,
-            // width: 260,
-            width: "20%",
+            width: 260,
+            // width: "20%",
             height: "100%",
             color: "white",
             px: 0.8,
@@ -54,7 +54,7 @@ const LeftSideBar = () => {
                         <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon color='primary' />} />
                     </Box>
                     <Box mt={0.5} mb={0.7}>
-                    <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon color='primary' />} />
+                        <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon color='primary' />} />
 
                     </Box>
                 </Box>
