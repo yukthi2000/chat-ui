@@ -4,14 +4,15 @@ import Main from './components/home/Main';
 // import './App.css';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from "./theme"
+import AllRoutes from './components/routes';
 
 function App() {
   return (
     <div className="App">
       <ThemeProvider theme={theme} >
         <CssBaseline />
-
-        <Main />
+<AllRoutes />
+        {/* <Main /> */}
       </ThemeProvider>
     </div>
   );

@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import InfoItem from './InfoItem';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
@@ -9,6 +9,9 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import Info from './Info';
 import RightSideBarContainer from '../../shared/RightSideBarContainer';
 import Chat from '../Chat';
+import { IMessage } from '../../../globals/types';
+import { chatApi } from '../../utils/api';
+import { useParams } from 'react-router-dom';
 
 const StyledTextField = styled(TextField)({
     background: "rgba(64,65,79,1)",
@@ -20,19 +23,46 @@ const StyledTextField = styled(TextField)({
 })
 
 
-const RightSideBar = () => {
+const RightSideBar =  () => {
     const inputtext = useRef<HTMLTextAreaElement>();
-    const [showChat, setshowChat] = useState(false);
-    const [submitText, setsubmitText] = useState("");
+    // const [showChat, setshowChat] = useState(false);
+    // const [submitText, setsubmitText] = useState("");
+
+    const{conversationId} = useParams();
+
+    const [messages,setMessages]=useState<(IMessage | string)[]>([]);
 
 
 
-    const onSubmit = () => {
+    const onSubmit =async () => {
         const val = inputtext.current!.value;
         if (!val) return;
 
-        setsubmitText(val)
-        inputtext.current!.value = ""
+        inputtext.current!.value="";
+const prevMsg = messages ? (messages[messages.length -1] as IMessage) : undefined ;
+
+
+setMessages([...messages,val])
+
+try {
+    const res= await chatApi({
+    conversationId: prevMsg? prevMsg.conversationId : undefined,
+    previousMessageId: prevMsg? prevMsg.messageId : undefined,
+    prompt: val
+});
+setMessages([...messages,res])
+}
+catch(err){
+console.log("Err is ", err);
+
+}
+
+
+
+
+
+
+
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -43,12 +73,17 @@ const RightSideBar = () => {
         }
     }
 
+    const loadconversation = useCallback(async()=>{
+if (!conversationId) return;
+
+    },[conversationId])
+
 
     return (
         <Grid container flexDirection="column" sx={{ height: "100vh", position: "relative" }}>
 
-            {!!submitText ? (
-                <Chat inputtext={submitText} />
+            {!!messages.length ? (
+                <Chat messages={messages} />
 
             ) : (<>
 
