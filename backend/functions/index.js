@@ -55,18 +55,28 @@ const openai = new OpenAI({
 const collectionTypes={histories:"histories"}
 
 const generateChatGPTResponse = async (prompt, parentMessageId) => {
-    const res = await openai.createChatCompletion({
+  console.log(parentMessageId);
+    const res = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: parentMessageId ? [{ role: "system", content: parentMessageId }, { role: "user", content: prompt }] : [{ role: "user", content: prompt }],
     });
-    const message = res.data.choices[0].message;
-    return { text: message.content, id: message.id };
+    const message = res.choices[0].message;
+    return { text: message.content, id: res.id };
   };
   
+  // const getDocRef = async (id) => {
+  //   const docRef = db.collection(collectionTypes.histories).doc(id);
+  //   return docRef;
+  // };
+  
   const getDocRef = async (id) => {
+    console.log("Collection:", collectionTypes.histories);
+    console.log("ID:", id);
     const docRef = db.collection(collectionTypes.histories).doc(id);
+    console.log("DocRef:", docRef.path);
     return docRef;
   };
+
   
   exports.generateText = functions.https.onRequest(async (request, response) => {
     cors(request, response, async () => {
@@ -106,6 +116,8 @@ const generateChatGPTResponse = async (prompt, parentMessageId) => {
   
       let conversationId = defaultConversationid;
       let messageId, text;
+      console.log(conversationId, messageId , text);
+
   
       try {
         const gptResponse = await generateChatGPTResponse(prompt, previousMessageId);
@@ -113,6 +125,8 @@ const generateChatGPTResponse = async (prompt, parentMessageId) => {
         messageId = gptResponse.id;
         text = gptResponse.text;
       } catch (err) {}
+
+      console.log(conversationId, messageId , text);
   
       let responses = [];
   
@@ -192,7 +206,7 @@ const generateChatGPTResponse = async (prompt, parentMessageId) => {
           // first Prompt
           const firstResponse = response?.[0];
   
-          return { id: doc.id, prompt: firstResponse?.prompt || undefined };
+          return { conversationId: doc.id, prompt: firstResponse?.prompt || undefined };
         });
   
         try {

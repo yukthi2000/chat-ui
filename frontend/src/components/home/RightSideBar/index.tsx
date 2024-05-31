@@ -1,5 +1,5 @@
 import { Box, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
 import InfoItem from './InfoItem';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
@@ -10,7 +10,7 @@ import Info from './Info';
 import RightSideBarContainer from '../../shared/RightSideBarContainer';
 import Chat from '../Chat';
 import { IMessage } from '../../../globals/types';
-import { chatApi } from '../../utils/api';
+import { chatApi, getConversationById } from '../../utils/api';
 import { useParams } from 'react-router-dom';
 
 const StyledTextField = styled(TextField)({
@@ -23,39 +23,43 @@ const StyledTextField = styled(TextField)({
 })
 
 
-const RightSideBar =  () => {
+const RightSideBar = () => {
     const inputtext = useRef<HTMLTextAreaElement>();
     // const [showChat, setshowChat] = useState(false);
     // const [submitText, setsubmitText] = useState("");
 
-    const{conversationId} = useParams();
+    const { conversationId } = useParams();
 
-    const [messages,setMessages]=useState<(IMessage | string)[]>([]);
+    const [messages, setMessages] = useState<(IMessage | string)[]>([]);
 
 
 
-    const onSubmit =async () => {
+    const onSubmit = async () => {
         const val = inputtext.current!.value;
         if (!val) return;
 
-        inputtext.current!.value="";
-const prevMsg = messages ? (messages[messages.length -1] as IMessage) : undefined ;
+        inputtext.current!.value = "";
+        const prevMsg = messages ? (messages[messages.length - 1] as IMessage) : undefined;
 
 
-setMessages([...messages,val])
+        setMessages([...messages, val])
 
-try {
-    const res= await chatApi({
-    conversationId: prevMsg? prevMsg.conversationId : undefined,
-    previousMessageId: prevMsg? prevMsg.messageId : undefined,
-    prompt: val
-});
-setMessages([...messages,res])
-}
-catch(err){
-console.log("Err is ", err);
+        try {
+            const res = await chatApi({
+                conversationId: conversationId ?
+                    conversationId :
+                    prevMsg ?
+                        prevMsg.conversationId :
+                        undefined,
+                previousMessageId: prevMsg ? prevMsg.messageId : undefined,
+                prompt: val
+            });
+            setMessages([...messages, res])
+        }
+        catch (err) {
+            console.log("Err is ", err);
 
-}
+        }
 
 
 
@@ -73,10 +77,21 @@ console.log("Err is ", err);
         }
     }
 
-    const loadconversation = useCallback(async()=>{
-if (!conversationId) return;
+    const loadconversation = useCallback(async () => {
+        if (!conversationId) return;
 
-    },[conversationId])
+        try {
+            const res = await getConversationById(conversationId);
+            setMessages(res.responses)
+
+        } catch (err) { }
+
+    }, [conversationId])
+
+
+    useEffect(() => {
+        loadconversation();
+    }, [loadconversation])
 
 
     return (

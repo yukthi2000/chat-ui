@@ -12,67 +12,87 @@ const MuiButton = styled(Button)({
     textTransform: "none",
     display: "flex",
     justifyContent: "flex-start"
-})
+});
+
+class History {
+    conversationId!: string
+    prompt!: string
+}
+
 const LeftSideBar = () => {
-const[history,sethistory]=useState<{conversationId:string,prompt:string}[]>([]);
-const {conversationId}=useParams();
-const navigate = useNavigate();
-const loadHistory=useCallback(async()=>{
-    try{
-        const history=await loadAllConversation();
-    }catch(err){}
-},[])
+    const [history, setHistory] = useState<History[]>([]);
+    const { conversationId } = useParams();
+    const navigate = useNavigate();
 
+    const loadHistory = useCallback(async () => {
+        try {
+            const historyData = await loadAllConversation();
+            setHistory(historyData.history);
+            console.log(typeof (historyData));
 
-useEffect(()=>{
-    loadHistory();
-},[loadHistory])
+        } catch (err) {
+            console.error("Failed to load conversations:", err);
+        }
+    }, []);
 
+    useEffect(() => {
+        loadHistory();
+    }, [loadHistory]);
 
-const openConversation=(conversationId: string)=>{
-    navigate(`/${conversationId}`)
-}
+    useEffect(() => {
+        console.log(history);
+    }, [history]);
 
-const newChat=()=>{
-    window.location.href="/"
-}
+    const openConversation = (conversationId: string) => {
+        navigate(`/${conversationId}`);
+    };
+
+    const newChat = () => {
+        window.location.href = "/";
+    };
 
     return (
         <Box sx={{
-            // position: "fixed",
             top: 0,
             background: "rgba(32,33,35,1)",
             left: 0,
             width: 260,
-            // width: "20%",
             height: "100%",
             color: "white",
             px: 0.8,
         }}>
             <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-
-                <MuiButton 
-                sx={{ mt: 0.7, py: 1.3,
-                 "&:hover": { backgroundColor: "rgba(86,88,105,1)",
-                  border: "1px solid rgba(86,88,105,1)" } }} 
-                  startIcon={<AddIcon />} style={{ textAlign: "left" }} 
-                  variant='outlined' fullWidth
-                  onClick={newChat}>New Chat</MuiButton>
+                <MuiButton
+                    sx={{
+                        mt: 0.7, py: 1.3,
+                        "&:hover": {
+                            backgroundColor: "rgba(86,88,105,1)",
+                            border: "1px solid rgba(86,88,105,1)"
+                        }
+                    }}
+                    startIcon={<AddIcon />}
+                    variant='outlined' fullWidth
+                    onClick={newChat}>
+                    New Chat
+                </MuiButton>
 
                 <Box sx={{
                     height: "100%",
                     overflow: "auto",
-                    // scrollbarWidth: "thin",
-                    // scrollbarColor: "rgba(255,255,255,0.1) rgba(32,33,35,0.1)",
                 }}>
 
 
-                    {history.map((h) => (
-                        <Box key={h.conversationId} mt={0.5} mb={0.7} onClick={()=>openConversation(h.conversationId)}>
-                            <SideBarItem text='first something somehng das dagdsf hjhk gyj '  selected={h.conversationId===conversationId} />
-                        </Box>
-                    ))}
-
+                    {history.length > 0 ? (
+                        history.map((h) => {
+                            return (
+                                <Box key={h.conversationId} mt={0.5} mb={0.7} onClick={() => openConversation(h.conversationId)}>
+                                    <SideBarItem text={h.prompt} selected={h.conversationId === conversationId} />
+                                </Box>
+                            )
+                        })
+                    ) : (
+                        <Typography>No conversations found.</Typography>
+                    )}
                 </Box>
                 <Box sx={{ borderTop: "1px solid rgba(86,88,105,1)" }}>
                     <Box mt={0.5} mb={0.7}>
@@ -80,14 +100,11 @@ const newChat=()=>{
                     </Box>
                     <Box mt={0.5} mb={0.7}>
                         <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon color='primary' />} />
-
                     </Box>
                 </Box>
-
             </Box>
-
         </Box>
     );
-}
+};
 
 export default LeftSideBar;
