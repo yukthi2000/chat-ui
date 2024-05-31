@@ -9,13 +9,13 @@ const ChatItem = ({ responseIcon, text }: { responseIcon?: boolean; text: string
         <RightSideBarContainer sx={{ p: 3 }}>
             <Grid container>
                 <Grid item xs={0.9}>
-                    {responseIcon ? <SmsOutlinedIcon htmlColor='#10a37f' fontSize='large' /> :
+                    {responseIcon ? <SmsOutlinedIcon htmlColor='blue' fontSize='large' /> :
 
-                        <AccountCircleOutlinedIcon htmlColor='#10a37f' fontSize='large' />
+                        <AccountCircleOutlinedIcon htmlColor='blue' fontSize='large' />
                     }
                 </Grid>
                 <Grid item xs={11}>
-                    <Typography color='primary' sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{text}</Typography>
+                    <Typography color='black' sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>{text}</Typography>
                 </Grid>
             </Grid>
         </RightSideBarContainer>

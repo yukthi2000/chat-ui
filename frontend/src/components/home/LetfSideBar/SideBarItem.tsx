@@ -11,7 +11,7 @@ const SideBarItem = ({ selected, text, startIcon, endIcon }: { selected?: boolea
         <ListItemIcon sx={{ minWidth: 0, mr: 1 }}>
           {startIcon || (
 
-            <ChatBubbleOutlineIcon fontSize='small' color='primary' />
+            <ChatBubbleOutlineIcon fontSize='small' sx={{color:"black"}} />
           )}
         </ListItemIcon>
         <ListItemText primary={<Typography sx={{ whiteSpace: "nowrap", overflow: "hidden", fontSize: "0.875rem", width: "100%" }}>{text}</Typography>} />
@@ -19,8 +19,8 @@ const SideBarItem = ({ selected, text, startIcon, endIcon }: { selected?: boolea
 
         {selected && (
           <ListItemIcon sx={{ minWidth: 0, ml: 1 }}>
-            <EditIcon fontSize='small' color='primary' />
-            <DeleteIcon fontSize='small' color='primary' />
+            <EditIcon fontSize='small' sx={{color:"black"}} />
+            <DeleteIcon fontSize='small' sx={{color:"black"}} />
           </ListItemIcon>
         )}
       </ListItemButton>

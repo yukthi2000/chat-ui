@@ -54,15 +54,15 @@ const LeftSideBar = () => {
     return (
         <Box sx={{
             top: 0,
-            background: "rgba(32,33,35,1)",
+            background: "rgba(222,222,222,1)",
             left: 0,
             width: 260,
             height: "100%",
-            color: "white",
+            color: "black",
             px: 0.8,
         }}>
             <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-                <MuiButton
+                {/* <MuiButton
                     sx={{
                         mt: 0.7, py: 1.3,
                         "&:hover": {
@@ -74,7 +74,7 @@ const LeftSideBar = () => {
                     variant='outlined' fullWidth
                     onClick={newChat}>
                     New Chat
-                </MuiButton>
+                </MuiButton> */}
 
                 <Box sx={{
                     height: "100%",
@@ -96,10 +96,10 @@ const LeftSideBar = () => {
                 </Box>
                 <Box sx={{ borderTop: "1px solid rgba(86,88,105,1)" }}>
                     <Box mt={0.5} mb={0.7}>
-                        <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon color='primary' />} />
+                        <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon sx={{color:"black"}}/>} />
                     </Box>
                     <Box mt={0.5} mb={0.7}>
-                        <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon color='primary' />} />
+                        <SideBarItem text='Area to show any Info' startIcon={<EditAttributesIcon sx={{color:"black"}} />} />
                     </Box>
                 </Box>
             </Box>

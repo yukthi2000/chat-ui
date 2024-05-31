@@ -23,7 +23,9 @@ const Chat = ({messages}:IProps) => {
           <ChatItem text={msg.prompt} />
 
 
-        <Box sx={{ background: "rgba(86,88,105,1)" }}>
+        <Box sx={{ background: "rgba(255, 249, 255, 0.7)" }}>
+
+
 
             <ChatItem responseIcon text={msg.text}   />
             </Box>

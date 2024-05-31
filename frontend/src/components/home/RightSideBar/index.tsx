@@ -14,10 +14,11 @@ import { chatApi, getConversationById } from '../../utils/api';
 import { useParams } from 'react-router-dom';
 
 const StyledTextField = styled(TextField)({
-    background: "rgba(64,65,79,1)",
+    background: "rgba(255,255,255,1)",
     "& .MuiOutlinedInput-root": {
         "& fieldset": {
-            border: "none",
+            border: "1px solid grey",
+            borderRadius: "4px"
         }
     }
 })
@@ -95,7 +96,7 @@ const RightSideBar = () => {
 
 
     return (
-        <Grid container flexDirection="column" sx={{ height: "100vh", position: "relative" }}>
+        <Grid container flexDirection="column" sx={{ height: "90vh", position: "relative" }}>
 
             {!!messages.length ? (
                 <Chat messages={messages} />
@@ -103,7 +104,7 @@ const RightSideBar = () => {
             ) : (<>
 
                 <Grid item sx={{ mt: { lg: "20vh", xs: 7 }, mb: 7 }}>
-                    <Typography variant='h4' fontWeight="bold" color="primary" textAlign="center">
+                    <Typography variant='h4' fontWeight="bold" color="black" textAlign="center">
                         Chat AI
                     </Typography>
                 </Grid>
@@ -131,10 +132,10 @@ const RightSideBar = () => {
                         onKeyDown={handleKeyDown}
                         sx={{ mt: "auto" }}
                         InputProps={{
-                            style: { color: "rgba(255,255,255,1)" },
+                            style: { color: "black" },
                             endAdornment: <InputAdornment position="start">
                                 <IconButton onClick={onSubmit} >
-                                    <SendOutlinedIcon color='primary' />
+                                    <SendOutlinedIcon sx={{ color: "grey" }} />
                                 </IconButton>
                             </InputAdornment>,
 
